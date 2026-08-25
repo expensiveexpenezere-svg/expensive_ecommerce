@@ -1,0 +1,14 @@
+{% extends 'store/base.html' %}
+{% block title %}Your cart{% endblock %}
+{% block content %}
+<section class="cart-page container">
+    <p class="eyebrow">Your basket</p><h1>Shopping cart</h1>
+    {% if items %}
+    <div class="cart-layout"><div class="cart-items">
+        {% for item in items %}<article class="cart-item"><div class="cart-item-image">{% if item.product.image %}<img src="{{ item.product.image.url }}" alt="{{ item.product.name }}">{% else %}<i class="fa-solid fa-laptop"></i>{% endif %}</div><div class="cart-item-details"><p>{{ item.product.brand }}</p><h2>{{ item.product.name }}</h2><strong>${{ item.product.price }}</strong></div><form class="quantity-form" action="{% url 'store:cart_update' item.pk %}" method="post">{% csrf_token %}<label for="quantity-{{ item.pk }}">Quantity</label><input id="quantity-{{ item.pk }}" type="number" name="quantity" min="0" max="99" value="{{ item.quantity }}"><button type="submit">Update</button></form><div class="cart-line-total"><strong>${{ item.line_total|floatformat:2 }}</strong><form action="{% url 'store:cart_remove' item.pk %}" method="post">{% csrf_token %}<button class="remove-item" type="submit">Remove</button></form></div></article>{% endfor %}
+    </div><aside class="order-summary"><h2>Order summary</h2><div><span>Subtotal</span><strong>${{ subtotal|floatformat:2 }}</strong></div><div><span>Delivery</span><span>Calculated at checkout</span></div><hr><div class="summary-total"><span>Total</span><strong>${{ subtotal|floatformat:2 }}</strong></div><button class="checkout-button" type="button" disabled>Checkout coming soon</button><a href="{% url 'store:product_list' %}">Continue shopping</a></aside></div>
+    {% else %}
+    <div class="empty-cart"><i class="fa-solid fa-cart-shopping"></i><h2>Your cart is empty</h2><p>Explore our collection and add something you’ll love.</p><a class="button" href="{% url 'store:product_list' %}">Start shopping</a></div>
+    {% endif %}
+</section>
+{% endblock %}

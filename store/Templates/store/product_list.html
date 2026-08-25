@@ -1,0 +1,10 @@
+{% extends 'store/base.html' %}
+{% block title %}Shop all products{% endblock %}
+{% block content %}
+<section class="catalogue container">
+    <p class="eyebrow">The collection</p><h1>Find your next favourite piece of tech.</h1>
+    <div class="catalogue-layout"><aside class="filters"><h2>Filter by category</h2><a href="{% url 'store:product_list' %}" class="{% if not active_category %}active{% endif %}">All products</a>{% for category in categories %}<a href="{% url 'store:product_list' %}?category={{ category.slug }}{% if query %}&q={{ query|urlencode }}{% endif %}" class="{% if active_category == category.slug %}active{% endif %}">{{ category.name }}</a>{% endfor %}</aside>
+        <div><p class="results-count">{{ products|length }} product{{ products|length|pluralize }}{% if query %} matching “{{ query }}”{% endif %}</p><div class="product-grid">{% for product in products %}{% include 'store/_product_card.html' with product=product %}{% empty %}<div class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><h2>No products found</h2><p>Try a different search or browse every product.</p><a class="text-link" href="{% url 'store:product_list' %}">Clear filters</a></div>{% endfor %}</div></div>
+    </div>
+</section>
+{% endblock %}

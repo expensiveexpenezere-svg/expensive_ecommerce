@@ -1,0 +1,4 @@
+<article class="product-card">
+    <div class="product-image">{% if product.image %}<img src="{{ product.image.url }}" alt="{{ product.name }}">{% else %}<i class="fa-solid fa-laptop" aria-hidden="true"></i>{% endif %}</div>
+    <div class="product-details"><p class="product-brand">{{ product.brand }}</p><h3>{{ product.name }}</h3><p class="product-price">${{ product.price }} {% if product.old_price %}<del>${{ product.old_price }}</del>{% endif %}</p><form action="{% url 'store:cart_add' product.pk %}" method="post">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="add-cart" type="submit"><i class="fa-solid fa-cart-plus"></i> Add to cart</button></form></div>
+</article>
